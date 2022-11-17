@@ -13,8 +13,9 @@ int binFileSize(std::string binFile)
 
 int main(int argc, char* argv[])
 {
-    std::ifstream fin(argv[1], std::ios::binary);
+    //std::ifstream fin(argv[1], std::ios::binary);
     //std::ofstream fout(argv[2]);
+    FILE *fin = fopen(argv[1], "r+b");
     FILE *fout = fopen(argv[2], "r+");
     int numOfEmployees = binFileSize(argv[1]) / sizeof(Employee);
 
@@ -27,9 +28,11 @@ int main(int argc, char* argv[])
     for (int i = 0; i < numOfEmployees; i++)
     {
         Employee temp;
-        fin.read((char*)&temp, sizeof(Employee));
+        //fin.read((char*)&temp, sizeof(Employee));
         //fout << temp << std::setw(20) << temp.hours * atoi(argv[3]) << '\n';
+        fread(&temp, sizeof(Employee), 1, fin);
         writeEmpToTxtFile(temp, fout);
         fprintf(fout, "%20.f\n", temp.hours * atoi(argv[3]));
     }
+    fclose(fout);
 }
