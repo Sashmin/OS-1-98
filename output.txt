@@ -1,0 +1,4 @@
+Report from input.bin
+ID                NAME               HOURS        TOTAL SALARY
+2                   2                   2                 600
+2                   2                   2                 600
