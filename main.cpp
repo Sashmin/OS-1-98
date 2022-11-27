@@ -2,19 +2,26 @@
 #include <fstream>
 #include <windows.h>
 #include <conio.h>
+#include <stdio.h>
 #include <string>
 #include "Employee.h"
 
 void outputBinaryFile(std::string fileName, int numOfEntries)
 {
-    std::ifstream fin(fileName, std::ios::binary);
-    std::cout << fileName << ":\n"; 
+    //std::ifstream fin(fileName, std::ios::binary);
+    FILE* fin;
+    errno_t finStream = fopen_s(&fin, fileName.c_str(), "rb");
+    //std::cout << fileName << ":\n";
+    fprintf(stdout, "%s:\n", fileName.c_str()); 
 
     Employee temp;
     for (int i = 0; i < numOfEntries; i++)
     {
-        fin.read((char*)&temp, sizeof(Employee));
-        std::cout << temp << '\n';
+        //fin.read((char*)&temp, sizeof(Employee));
+        fread(&temp, sizeof(Employee), 1, fin);
+        //std::cout << temp << '\n';
+        writeEmpToTxtFile(temp, stdout);
+        fprintf(stdout, "\n");
     }
 }
 

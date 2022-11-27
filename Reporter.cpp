@@ -9,19 +9,21 @@ int binFileSize(std::string binFile)
     const char* ch = binFile.c_str();
     FILE *fin = fopen(ch, "r+b");
     fseek(fin, 0, SEEK_END);
-    return ftell(fin);
+    int answer = ftell(fin);
+    fseek(fin, 0, SEEK_SET);
+    return answer;
 }
 
 int main(int argc, char* argv[])
 {
-    FILE *fin = fopen(argv[1], "r+b");
-    FILE *fout = fopen(argv[2], "r+");
-    int numOfEmployees = binFileSize(argv[1]) / sizeof(Employee);
+    FILE *fin = fopen(argv[1], "rb");
+    FILE *fout = fopen(argv[2], "w");
+    //int numOfEmployees = binFileSize(argv[1]) / sizeof(Employee);
 
     fprintf(fout, "Report from %s\n", argv[1]);
     fprintf(fout, "                  ID                NAME               HOURS        TOTAL SALARY\n");
 
-    for (int i = 0; i < numOfEmployees; i++)
+    for (int i = 0; i < binFileSize(argv[1]) / sizeof(Employee); i++)
     {
         Employee temp;
         fread(&temp, sizeof(Employee), 1, fin);
