@@ -4,7 +4,7 @@
 #include <conio.h>
 #include <stdio.h>
 #include <string>
-#include "Employee.h"
+#include "..\Employee\Employee.h"
 
 void outputBinaryFile(std::string fileName, int numOfEntries)
 {
@@ -12,7 +12,8 @@ void outputBinaryFile(std::string fileName, int numOfEntries)
     FILE* fin;
     errno_t finStream = fopen_s(&fin, fileName.c_str(), "rb");
     //std::cout << fileName << ":\n";
-    fprintf(stdout, "%s:\n", fileName.c_str()); 
+    fprintf(stdout, "%s:\n", fileName.c_str());
+    fprintf(stdout, "%20s%20s%20s\n", "ID", "NAME", "HOURS");
 
     Employee temp;
     for (int i = 0; i < numOfEntries; i++)
@@ -27,15 +28,17 @@ void outputBinaryFile(std::string fileName, int numOfEntries)
 
 void outputReport(std::string fileName, int numOfEntries)
 {
-    std::ifstream fin(fileName); 
+    FILE* fin;
+    errno_t file = fopen_s(&fin, fileName.c_str(), "r");
 
-    std::string temp;
-    for (int i = 0; i < numOfEntries + 2; i++)
+    char temp[100];
+    for (int i = 0; i < numOfEntries + 1; i++)
     {
-        std::getline(fin, temp);
-        std::cout << temp << '\n';
+        fgets(temp, 99, fin);
+        printf("%s", temp);
     }
 }
+
 
 int main()
 {
@@ -61,7 +64,7 @@ int main()
     si.cb = sizeof(STARTUPINFO);
 
     CreateProcessA(NULL, lpwCommandLineRequest, NULL, NULL, FALSE,
-    CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp);
+        CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp);
 
     WaitForSingleObject(piApp.hProcess, INFINITE);
 
@@ -87,7 +90,7 @@ int main()
     si.cb = sizeof(STARTUPINFO);
 
     CreateProcessA(NULL, lpwCommandLineRequest, NULL, NULL, FALSE,
-    CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp);
+        CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp);
 
     WaitForSingleObject(piApp.hProcess, INFINITE);
 
@@ -97,7 +100,7 @@ int main()
 
     CloseHandle(piApp.hProcess);
 
-    
-    
-}   
+
+
+}
 

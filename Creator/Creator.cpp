@@ -1,11 +1,12 @@
 #include <iostream>
 #include <fstream>
-#include "Employee.h"
+#include "..\Employee\Employee.h"
+#pragma warning(disable: 4996)
 
 int main(int argc, char* argv[])
 {
-    FILE* binOutputFile;
-    errno_t binOutputStream = fopen_s(&binOutputFile, argv[1], "wb");
+    FILE* binOutputFile = fopen(argv[1], "wb");
+    //errno_t binOutputStream = fopen_s(&binOutputFile, argv[1], "wb");
     Employee temp;
     for (int i = 0; i < atoi(argv[2]); i++)
     {
