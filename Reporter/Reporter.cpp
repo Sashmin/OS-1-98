@@ -5,10 +5,9 @@
 #include "..\Employee\Employee.h"
 #pragma warning(disable: 4996)
 
-int binFileSize(std::string binFile)
+int binFileSize(char binFile[])
 {
-	const char* ch = binFile.c_str();
-	FILE* fin = fopen("input.bin", "rb");
+	FILE* fin = fopen(binFile, "rb");
 	if (!fin) perror("failed to open");
 	fseek(fin, 0, SEEK_END);
 	int answer = ftell(fin);

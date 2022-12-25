@@ -6,11 +6,13 @@
 #include <string>
 #include "..\Employee\Employee.h"
 
-void outputBinaryFile(std::string fileName, int numOfEntries)
+const int MAX_STR_SIZE = 200;
+
+void outputBinaryFile(char fileName[], int numOfEntries)
 {
 	FILE* fin;
-	errno_t finStream = fopen_s(&fin, fileName.c_str(), "rb");
-	fprintf(stdout, "%s:\n", fileName.c_str());
+	errno_t finStream = fopen_s(&fin, fileName, "rb");
+	fprintf(stdout, "%s:\n", fileName);
 	fprintf(stdout, "%20s%20s%20s\n", "ID", "NAME", "HOURS");
 
 	Employee temp;
@@ -22,10 +24,10 @@ void outputBinaryFile(std::string fileName, int numOfEntries)
 	}
 }
 
-void outputReport(std::string fileName, int numOfEntries)
+void outputReport(char fileName[], int numOfEntries)
 {
 	FILE* fin;
-	errno_t file = fopen_s(&fin, fileName.c_str(), "r");
+	errno_t file = fopen_s(&fin, fileName, "r");
 
 	char temp[100];
 	for (int i = 0; i < numOfEntries + 1; i++)
@@ -38,19 +40,19 @@ void outputReport(std::string fileName, int numOfEntries)
 
 int main()
 {
-	std::string binFileName;
-	int numOfEntries;
+	char binFileName[MAX_STR_SIZE + 1] = "";
+	int numOfEntries = 0;
 
-	std::cout << "Enter name of the file: ";
-	std::cin >> binFileName;
-	std::cout << "Enter number of entries: ";
-	std::cin >> numOfEntries;
-	std::string commandLineRequest;
-	LPSTR lpwCommandLineRequest;
+	printf("Enter name of the file (without extension): ");
+	scanf_s("%s", binFileName, MAX_STR_SIZE);
+	strcat_s(binFileName, ".bin");
 
-	commandLineRequest = "Creator.exe";
-	commandLineRequest += " " + binFileName + " " + std::to_string(numOfEntries);
-	lpwCommandLineRequest = &commandLineRequest[0];
+	printf("Enter number of entries: ");
+	scanf_s("%d", &numOfEntries);
+	char lpwCommandLineRequest[MAX_STR_SIZE + 1] = "";
+
+	
+	sprintf_s(lpwCommandLineRequest, "Creator.exe %s %d", binFileName, numOfEntries);
 
 	STARTUPINFOA si;
 	PROCESS_INFORMATION piApp;
@@ -65,21 +67,21 @@ int main()
 
 	CloseHandle(piApp.hProcess);
 
-	std::cout << '\n';
+	printf("\n");
 	outputBinaryFile(binFileName, numOfEntries);
-	std::cout << '\n';
+	printf("\n");
 
-	std::string txtFileName;
-	int hourlySalary;
+	char txtFileName[MAX_STR_SIZE + 1] = "";
+	int hourlySalary = 0;
 
-	std::cout << "Enter text report file: ";
-	std::cin >> txtFileName;
-	std::cout << "Enter hourly salary: ";
-	std::cin >> hourlySalary;
+	printf("Enter text report file name (without extension): ");
+	scanf_s("%s", txtFileName, MAX_STR_SIZE);
+	strcat_s(txtFileName, ".txt");
 
-	commandLineRequest = "Reporter.exe";
-	commandLineRequest += " " + binFileName + " " + txtFileName + " " + std::to_string(hourlySalary);
-	lpwCommandLineRequest = &commandLineRequest[0];
+	printf("Enter hourly salary: ");
+	scanf_s("%d", &hourlySalary);
+
+	sprintf_s(lpwCommandLineRequest, "Reporter.exe %s %s %d", binFileName, txtFileName, hourlySalary);
 
 	ZeroMemory(&si, sizeof(STARTUPINFO));
 	si.cb = sizeof(STARTUPINFO);
