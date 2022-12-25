@@ -29,10 +29,10 @@ void outputReport(char fileName[], int numOfEntries)
 	FILE* fin;
 	errno_t file = fopen_s(&fin, fileName, "r");
 
-	char temp[100];
+	char temp[MAX_STR_SIZE + 1];
 	for (int i = 0; i < numOfEntries + 1; i++)
 	{
-		fgets(temp, 99, fin);
+		fgets(temp, MAX_STR_SIZE, fin);
 		printf("%s", temp);
 	}
 }
